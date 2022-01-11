@@ -1,5 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 
+import { AppError } from '../../../../shared/errors';
 import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
 
 interface IRequest {
@@ -29,7 +30,7 @@ class CreateCompanyUseCase {
     const company = await this.companiesRepository.findByCnpj(cnpj);
 
     if (company) {
-      throw new Error('This company already exists');
+      throw new AppError('This company already exists');
     }
 
     const updated_by = created_by;
