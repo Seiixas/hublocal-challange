@@ -51,9 +51,13 @@ class Company {
   @JoinColumn({ name: 'updated_by' })
   updatedUser: User;
 
+  @Column()
+  approved: boolean;
+
   constructor() {
     if (!this.id) {
       this.id = uuidv4();
+      this.approved = false;
     }
   }
 }

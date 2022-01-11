@@ -10,7 +10,7 @@ async function create() {
 
   await connection.query(`
     INSERT INTO users VALUES (
-      '${id}', 'Administrator', 'admin@hublocal.com', '${hashedPassword}', true, 'now()', 'now()'
+      '${id}', 'Administrator', 'admin@hublocal.com', '${hashedPassword}', true, '${new Date().getTime()}', '${new Date().getTime()}'
     )
   `);
 
