@@ -5,8 +5,8 @@ import { CreateCompanyUseCase } from './CreateCompanyUseCase';
 
 class CreateCompanyController {
   async handle(request: Request, response: Response) {
-    const { name, description, cnpj, latitude, longitude, created_by } =
-      request.body;
+    const { id } = request.user;
+    const { name, description, cnpj, latitude, longitude } = request.body;
 
     const createCompanyUseCase = container.resolve(CreateCompanyUseCase);
 
@@ -16,7 +16,7 @@ class CreateCompanyController {
       cnpj,
       latitude,
       longitude,
-      created_by,
+      created_by: id,
     });
 
     return response.status(201).send();
