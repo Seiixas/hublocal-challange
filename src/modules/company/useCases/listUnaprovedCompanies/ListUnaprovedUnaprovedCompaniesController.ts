@@ -1,16 +1,18 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
 
-import { ListCompaniesUseCase } from './ListCompaniesUseCase';
+import { ListUnapprovedCompaniesUseCase } from './ListUnapprovedCompaniesUseCase';
 
-class ListCompaniesController {
+class ListUnapprovedCompaniesController {
   async handle(request: Request, response: Response): Promise<Response> {
-    const listCompaniesUseCase = container.resolve(ListCompaniesUseCase);
+    const listUnapprovedCompaniesUseCase = container.resolve(
+      ListUnapprovedCompaniesUseCase
+    );
 
-    const companies = await listCompaniesUseCase.execute();
+    const companies = await listUnapprovedCompaniesUseCase.execute();
 
     return response.json(companies);
   }
 }
 
-export { ListCompaniesController };
+export { ListUnapprovedCompaniesController };
