@@ -5,6 +5,8 @@ import { Company } from '../infra/typeorm/entities/Company';
 interface ICompaniesRepository {
   create(data: ICreateCompanyDTO): Promise<void>;
 
+  remove(id: string): Promise<void>;
+
   all(): Promise<Company[]>;
 
   findByCnpj(cnpj: string): Promise<Company>;

@@ -34,6 +34,15 @@ class CompaniesRepository implements ICompaniesRepository {
     await this.repository.save(company);
   }
 
+  async remove(id: string): Promise<void> {
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(Company)
+      .where('id = :id', { id })
+      .execute();
+  }
+
   async all(): Promise<Company[]> {
     const companies = await this.repository.find({
       approved: true,
