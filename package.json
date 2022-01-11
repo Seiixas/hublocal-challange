@@ -5,7 +5,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "tsnd --inspect --transpile-only --ignore-watch node_modules --respawn src/shared/infra/http/server.ts",
-    "typeorm": "tsnd node_modules/typeorm/cli"
+    "typeorm": "tsnd node_modules/typeorm/cli",
+    "seed:admin": "tsnd src/shared/infra/typeorm/seed/admin.ts"
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
