@@ -23,6 +23,12 @@ class RemoveCompanyUseCase {
   async execute({ id, user_id, password }: IRequest): Promise<void> {
     const user = await this.usersRepository.findById(user_id);
 
+    const passwordMatches = await compare(password, user.password);
+
+    if (!passwordMatches) {
+      throw new AppError('Password incorrect!', 401);
+    }
+
     const company = await this.companiesRepository.findById(id);
 
     if (!company) {
@@ -33,12 +39,6 @@ class RemoveCompanyUseCase {
 
     if (!companyOwnsToUser && !user.admin) {
       throw new AppError('This is not your company', 401);
-    }
-
-    const passwordMatches = await compare(password, user.password);
-
-    if (!passwordMatches) {
-      throw new AppError('Password incorrect!', 401);
     }
 
     await this.companiesRepository.remove(id);
