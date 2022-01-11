@@ -2,10 +2,14 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
+
+import { User } from '../../../../user/infra/typeorm/entities/User';
 
 @Entity('companies')
 class Company {
@@ -36,8 +40,16 @@ class Company {
   @Column()
   created_by: string;
 
+  @OneToOne(() => User)
+  @JoinColumn({ name: 'created_by' })
+  createdUser: User;
+
   @Column()
   updated_by: string;
+
+  @OneToOne(() => User)
+  @JoinColumn({ name: 'updated_by' })
+  updatedUser: User;
 
   constructor() {
     if (!this.id) {
