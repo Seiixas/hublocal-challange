@@ -10,6 +10,7 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 import { User } from '../../../../user/infra/typeorm/entities/User';
+import { Category } from './Category';
 
 @Entity('companies')
 class Company {
@@ -53,6 +54,13 @@ class Company {
 
   @Column()
   approved: boolean;
+
+  @Column()
+  category_id: string;
+
+  @OneToOne(() => Category)
+  @JoinColumn({ name: 'category_id' })
+  category: Category;
 
   constructor() {
     if (!this.id) {

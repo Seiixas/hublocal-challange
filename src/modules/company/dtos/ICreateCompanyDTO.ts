@@ -12,6 +12,8 @@ interface ICreateCompanyDTO {
   created_by: string;
 
   updated_by: string;
+
+  category_id: string;
 }
 
 export { ICreateCompanyDTO };

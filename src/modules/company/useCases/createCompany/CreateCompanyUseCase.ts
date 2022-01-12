@@ -10,6 +10,7 @@ interface IRequest {
   latitude: number;
   longitude: number;
   created_by: string;
+  category_id: string;
 }
 
 @injectable()
@@ -26,10 +27,13 @@ class CreateCompanyUseCase {
     latitude,
     longitude,
     created_by,
+    category_id,
   }: IRequest) {
-    const company = await this.companiesRepository.findByCnpj(cnpj);
+    const companyAlreadyExists = await this.companiesRepository.findByCnpj(
+      cnpj
+    );
 
-    if (company) {
+    if (companyAlreadyExists) {
       throw new AppError('This company already exists');
     }
 
@@ -43,6 +47,7 @@ class CreateCompanyUseCase {
       longitude,
       created_by,
       updated_by,
+      category_id,
     });
   }
 }
