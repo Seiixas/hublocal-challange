@@ -4,7 +4,9 @@ import { CategoriesRepository } from '../../modules/company/infra/typeorm/reposi
 import { CompaniesRepository } from '../../modules/company/infra/typeorm/repositories/CompaniesRepository';
 import { ICategoriesRepository } from '../../modules/company/repositories/ICategoriesRepository';
 import { ICompaniesRepository } from '../../modules/company/repositories/ICompaniesRepository';
+import { AddressesRepository } from '../../modules/user/infra/typeorm/repositories/AddressesRepository';
 import { UsersRepository } from '../../modules/user/infra/typeorm/repositories/UsersRepository';
+import { IAddressesRepository } from '../../modules/user/repositories/IAddressesRepository';
 import { IUsersRepository } from '../../modules/user/repositories/IUsersRepository';
 
 container.registerSingleton<ICompaniesRepository>(
@@ -20,4 +22,9 @@ container.registerSingleton<IUsersRepository>(
 container.registerSingleton<ICategoriesRepository>(
   'CategoriesRepository',
   CategoriesRepository
+);
+
+container.registerSingleton<IAddressesRepository>(
+  'AddressesRepository',
+  AddressesRepository
 );
