@@ -2,6 +2,7 @@ import { getRepository, Repository } from 'typeorm';
 
 import { ICreateUserDTO } from '../../../dtos/ICreateUserDTO';
 import { IUsersRepository } from '../../../repositories/IUsersRepository';
+import { Address } from '../entities/Address';
 import { User } from '../entities/User';
 
 class UsersRepository implements IUsersRepository {
@@ -27,6 +28,16 @@ class UsersRepository implements IUsersRepository {
     const user = await this.repository.findOne(id);
 
     return user;
+  }
+
+  async findAddress(id: string): Promise<Address> {
+    const addressByUser = await this.repository.query(`
+      SELECT * FROM addresses WHERE created_by IN (
+        SELECT id FROM users WHERE id LIKE '${id}'
+      )
+    `);
+
+    return addressByUser;
   }
 }
 

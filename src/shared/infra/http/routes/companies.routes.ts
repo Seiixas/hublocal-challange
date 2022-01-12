@@ -3,6 +3,7 @@ import { Router } from 'express';
 import { ApproveCompanyController } from '../../../../modules/company/useCases/approveCompany/ApproveCompanyController';
 import { CreateCompanyController } from '../../../../modules/company/useCases/createCompany/CreateCompanyController';
 import { ListCompaniesController } from '../../../../modules/company/useCases/listCompanies/ListCompaniesController';
+import { ListCompaniesCloselyToUserController } from '../../../../modules/company/useCases/listCompaniesCloselyToUser/ListCompaniesCloselyToUserController';
 import { ListUnapprovedCompaniesController } from '../../../../modules/company/useCases/listUnaprovedCompanies/ListUnaprovedUnaprovedCompaniesController';
 import { RemoveCompanyController } from '../../../../modules/company/useCases/removeCompany/RemoveCompanyController';
 import { ensureAdministrator } from '../middlewares/ensureAdministrator';
@@ -15,6 +16,8 @@ const listCompaniesController = new ListCompaniesController();
 const listUnapprovedController = new ListUnapprovedCompaniesController();
 const approveCompanyController = new ApproveCompanyController();
 const removeCompanyController = new RemoveCompanyController();
+const listCategoriesCloselyToUserController =
+  new ListCompaniesCloselyToUserController();
 
 companiesRoutes.post('/', ensureAuthenticated, createCompanyController.handle);
 
@@ -38,6 +41,12 @@ companiesRoutes.put(
   ensureAuthenticated,
   ensureAdministrator,
   approveCompanyController.handle
+);
+
+companiesRoutes.get(
+  '/closely',
+  ensureAuthenticated,
+  listCategoriesCloselyToUserController.handle
 );
 
 export { companiesRoutes };
