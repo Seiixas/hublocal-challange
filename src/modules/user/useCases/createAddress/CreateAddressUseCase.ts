@@ -1,5 +1,5 @@
-import buscaCep from 'busca-cep';
 import 'reflect-metadata';
+import CepCoords from 'coordenadas-do-cep';
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '../../../../shared/errors';
@@ -27,31 +27,25 @@ class CreateAddressUseCase {
     postal_code,
     created_by,
   }: IRequest): Promise<void> {
-    const {
-      uf: state,
-      localidade: city,
-      erro: cepDoesNotExists,
-    } = await buscaCep(postal_code, {
-      sync: false,
-      timeout: 1000,
-    });
+    try {
+      const { uf: state, localidade: city } = await CepCoords.getInfoCep(
+        postal_code
+      );
+      const updated_by = created_by;
 
-    if (cepDoesNotExists) {
-      throw new AppError('This CEP does not exists', 404);
+      await this.addressesRepository.create({
+        street,
+        district,
+        number,
+        city,
+        state,
+        postal_code,
+        created_by,
+        updated_by,
+      });
+    } catch (err) {
+      throw new AppError('This CEP does not exists or does not matches');
     }
-
-    const updated_by = created_by;
-
-    await this.addressesRepository.create({
-      street,
-      district,
-      number,
-      city,
-      state,
-      postal_code,
-      created_by,
-      updated_by,
-    });
   }
 }
 

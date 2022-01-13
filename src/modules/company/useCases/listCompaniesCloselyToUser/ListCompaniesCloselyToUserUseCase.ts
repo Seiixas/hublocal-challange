@@ -6,8 +6,13 @@ import { Company } from '../../infra/typeorm/entities/Company';
 import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
 
 interface ICoordinates {
-  lat: string;
-  lon: string;
+  lat: number;
+  lon: number;
+}
+
+interface IRequest {
+  user_id: string;
+  distance?: number;
 }
 
 @injectable()
@@ -19,7 +24,7 @@ class ListCompaniesCloselyToUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute(user_id: string): Promise<Company[]> {
+  async execute({ user_id, distance }: IRequest): Promise<Company[]> {
     const user = await this.usersRepository.findById(user_id);
     const address = await this.usersRepository.findAddress(user.id);
     const companies = await this.companiesRepository.all();
@@ -37,8 +42,8 @@ class ListCompaniesCloselyToUserUseCase {
       const { latitude: lat, longitude: lon } = company;
 
       const companyCoordinates: ICoordinates = {
-        lat: String(lat),
-        lon: String(lon),
+        lat,
+        lon,
       };
 
       const kmDistance = CepCoords.getDistancia(
@@ -46,7 +51,9 @@ class ListCompaniesCloselyToUserUseCase {
         companyCoordinates
       );
 
-      if (kmDistance < 20) {
+      const distanceSettedByUser = distance || 20;
+
+      if (kmDistance < distanceSettedByUser) {
         companiesClosely.push(company);
       }
     });
