@@ -18,6 +18,15 @@ class UsersRepository implements IUsersRepository {
     await this.repository.save(user);
   }
 
+  async remove(id: string): Promise<void> {
+    await this.repository
+      .createQueryBuilder()
+      .delete()
+      .from(User)
+      .where('id = :id', { id })
+      .execute();
+  }
+
   async findByEmail(email: string): Promise<User> {
     const user = await this.repository.findOne({ email });
 

@@ -36,7 +36,7 @@ class AddressesRepository implements IAddressesRepository {
   }
 
   async getAddressFromUser(id: string): Promise<Address> {
-    const address = await this.repository.findOne(id);
+    const address = await this.repository.findOne({ created_by: id });
 
     return address;
   }
