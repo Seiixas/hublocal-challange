@@ -1,6 +1,7 @@
 import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '../../../../shared/errors';
+import { ICategoriesRepository } from '../../repositories/ICategoriesRepository';
 import { ICompaniesRepository } from '../../repositories/ICompaniesRepository';
 
 interface IRequest {
@@ -17,7 +18,9 @@ interface IRequest {
 class CreateCompanyUseCase {
   constructor(
     @inject('CompaniesRepository')
-    private companiesRepository: ICompaniesRepository
+    private companiesRepository: ICompaniesRepository,
+    @inject('CategoriesRepository')
+    private categoriesRepository: ICategoriesRepository
   ) {}
 
   async execute({
@@ -35,6 +38,14 @@ class CreateCompanyUseCase {
 
     if (companyAlreadyExists) {
       throw new AppError('This company already exists');
+    }
+
+    const categoryExists = await this.categoriesRepository.findById(
+      category_id
+    );
+
+    if (!categoryExists) {
+      throw new AppError('This category does not exists');
     }
 
     const updated_by = created_by;
