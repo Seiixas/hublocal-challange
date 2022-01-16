@@ -3,7 +3,7 @@ import { ISetCompanyApprovedDTO } from '../dtos/ISetCompanyApprovedDTO';
 import { Company } from '../infra/typeorm/entities/Company';
 
 interface ICompaniesRepository {
-  create(data: ICreateCompanyDTO): Promise<void>;
+  create(data: ICreateCompanyDTO): Promise<Company>;
 
   remove(id: string): Promise<void>;
 

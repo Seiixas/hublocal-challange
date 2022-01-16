@@ -3,6 +3,7 @@ import { inject, injectable } from 'tsyringe';
 
 import { AppError } from '../../../../shared/errors';
 import { ICreateUserDTO } from '../../dtos/ICreateUserDTO';
+import { User } from '../../infra/typeorm/entities/User';
 import { IUsersRepository } from '../../repositories/IUsersRepository';
 
 @injectable()
@@ -12,7 +13,7 @@ class CreateUserUseCase {
     private usersRepository: IUsersRepository
   ) {}
 
-  async execute({ name, email, password }: ICreateUserDTO): Promise<void> {
+  async execute({ name, email, password }: ICreateUserDTO): Promise<User> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (user) {
@@ -21,11 +22,13 @@ class CreateUserUseCase {
 
     const hashedPassword = await hash(password, 8);
 
-    await this.usersRepository.create({
+    const newUser = await this.usersRepository.create({
       name,
       email,
       password: hashedPassword,
     });
+
+    return newUser;
   }
 }
 

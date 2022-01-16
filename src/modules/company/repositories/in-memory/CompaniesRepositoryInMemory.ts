@@ -15,7 +15,7 @@ class CompaniesRepositoryInMemory implements ICompaniesRepository {
     created_by,
     updated_by,
     category_id,
-  }: ICreateCompanyDTO): Promise<void> {
+  }: ICreateCompanyDTO): Promise<Company> {
     const company = new Company();
 
     Object.assign(company, {
@@ -30,6 +30,8 @@ class CompaniesRepositoryInMemory implements ICompaniesRepository {
     });
 
     this.companies.push(company);
+
+    return company;
   }
 
   async remove(id: string): Promise<void> {

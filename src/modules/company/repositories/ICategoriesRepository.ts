@@ -2,7 +2,7 @@ import { ICreateCategoryDTO } from '../dtos/ICreateCategoryDTO';
 import { Category } from '../infra/typeorm/entities/Category';
 
 interface ICategoriesRepository {
-  create({ name, description }: ICreateCategoryDTO): Promise<void>;
+  create({ name, description }: ICreateCategoryDTO): Promise<Category>;
 
   remove(id: string): Promise<void>;
 
